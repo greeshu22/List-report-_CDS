@@ -1,0 +1,35 @@
+@AbapCatalog.sqlViewName: 'ZPRJ13'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'project deatils'
+@UI.chart: [{ 
+dimensions: [ 'Prjname' ],
+dimensionAttributes: [{ dimension: 'Prjname',role: #CATEGORY }],
+measures: [ 'Teamsize' ],
+measureAttributes: [{ measure: 'Teamsize',role: #AXIS_1 }],
+chartType: #COLUMN,
+qualifier: 'CHprjVsTeamSize'
+ }]
+ @ObjectModel.modelCategory: #BUSINESS_OBJECT
+ @ObjectModel.compositionRoot: true
+ @ObjectModel.transactionalProcessingEnabled: true
+ @ObjectModel.createEnabled: true
+@ObjectModel.updateEnabled: true 
+@ObjectModel.deleteEnabled: true 
+@ObjectModel.writeActivePersistence: 'zb68fe_projects'
+define view zprj_emp_App1 as select from zb68fe_projects
+{
+@UI.lineItem: [{ position: 10 ,qualifier: 'LIprojects'}]
+    key empid as Empid,
+    @UI.lineItem: [{ position: 20 ,qualifier: 'LIprojects'}]
+    key prjcode as Prjcode,
+    @UI.lineItem: [{ position: 30 ,qualifier: 'LIprojects'}]
+    clientname as Clientname,
+    @UI.lineItem: [{ position: 40 ,qualifier: 'LIprojects'}]
+    prjname as Prjname,
+    @UI.lineItem: [{ position: 50 ,qualifier: 'LIprojects'}]
+    prjdesc as Prjdesc,
+    @UI.lineItem: [{ position: 60 ,qualifier: 'LIprojects'}]
+    teamsize as Teamsize
+}
