@@ -1,0 +1,11 @@
+@AbapCatalog.sqlViewName: 'ZEMP_VH_SQL'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'value help'
+@ObjectModel.resultSet.sizeCategory: #XS
+define view zemp_vh as select from zb68fe_employees
+{
+    key empid as Empid,
+    name as Name
+}
