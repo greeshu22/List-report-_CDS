@@ -1,0 +1,178 @@
+@AbapCatalog.sqlViewName: 'ZEMP_SQL_APP'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@ObjectModel.modelCategory: #BUSINESS_OBJECT
+@ObjectModel.compositionRoot: true
+@ObjectModel.transactionalProcessingEnabled: true
+@ObjectModel.createEnabled: true
+@ObjectModel.updateEnabled: true
+@ObjectModel.deleteEnabled: true
+@ObjectModel.writeActivePersistence: 'zb68fe_employees'
+@EndUserText.label: 'emp cds'
+@Search.searchable: true
+@UI.lineItem: [{ criticality: 'Statuscriticality' }]
+@UI.headerInfo: {
+    typeName: 'Employee',
+    typeNamePlural: 'Employees',
+    title: {
+        type: #STANDARD,
+        value: 'Name'
+    },
+    description: {
+        type: #STANDARD,
+        value: 'Desig'
+    }
+}
+@OData.publish: true
+define view zemp_app1 as select from zb68fe_employees
+association [0..*] to zprj_emp_App1 as _prj on $projection.Empid = _prj.Empid
+{
+@UI.facet: [{ id:'idDesig',
+              type: #DATAPOINT_REFERENCE,
+              purpose: #HEADER,
+              targetQualifier: 'Desig'
+             },
+             { id:'idEmail',
+              type: #DATAPOINT_REFERENCE,
+              purpose: #HEADER,
+              targetQualifier: 'Email'
+             },
+             { id:'idSkill',
+              type: #DATAPOINT_REFERENCE,
+              purpose: #HEADER,
+              targetQualifier: 'Skill'
+             },
+             { id:'idSalary',
+              type: #DATAPOINT_REFERENCE,
+              purpose: #HEADER,
+              targetQualifier: 'Salary'
+             },
+             { id:'idStatus',
+              type: #DATAPOINT_REFERENCE,
+              purpose: #HEADER,
+              targetQualifier: 'Status'
+             },
+             { id:'idRating',
+              type: #DATAPOINT_REFERENCE,
+              purpose: #HEADER,
+              targetQualifier: 'Rating'
+             },
+             {
+             id:'idCFEmpinfo',
+             type:#COLLECTION,
+               label: 'Employee Informartion',
+             position: 10
+             },
+             {
+             id:'idBasicInfo',
+             label: 'Basic Info',
+             type: #FIELDGROUP_REFERENCE,
+             targetQualifier: 'FGBasicInfo',
+             parentId: 'idCFEmpinfo',
+             position: 10,
+             purpose: #STANDARD
+             },
+             {
+             id:'idContactInfo',
+             label: 'Contact Info',
+             type: #FIELDGROUP_REFERENCE,
+             targetQualifier: 'FGContactInfo',
+             parentId: 'idCFEmpinfo',
+             purpose: #STANDARD,
+             position: 20
+             },
+             {
+             id:'idStatusInfo',
+             label: 'Status Info',
+             type: #FIELDGROUP_REFERENCE,
+             targetQualifier: 'FGStatusInfo',
+             parentId: 'idCFEmpinfo',
+             purpose: #STANDARD,
+             position: 30
+             },
+             {
+             id:'idPrjInfo',
+             position: 20,
+             type: #LINEITEM_REFERENCE,
+             targetQualifier: 'LIprojects',
+             targetElement: '_prj',
+             label: 'Project Information',
+             purpose: #STANDARD
+             },
+             {
+             id:'idChartPrjVsTeamsize',
+             label:'Project Vs Teamsize',
+             type: #CHART_REFERENCE,
+             targetElement: '_prj',
+             targetQualifier: 'CHprjVsTeamSize',
+             position: 30,
+             purpose: #STANDARD
+             
+             }]
+@UI.lineItem: [{ position: 10 }]
+@Search.defaultSearchElement: true
+@EndUserText.label: 'Employee ID'
+@UI.selectionField: [{ position: 10 }]
+@Consumption.valueHelpDefinition: [{ 
+entity:{
+element: 'Empid',
+name: 'zemp_vh'
+}
+ }]
+ @UI.fieldGroup: [{ position: 10, qualifier: 'FGBasicInfo' }]
+   key empid as Empid,
+   @UI.lineItem: [{ position: 20 }]
+   @EndUserText.label: 'Name'
+    @UI.fieldGroup: [{ position: 20, qualifier: 'FGBasicInfo' }]
+    @Search.defaultSearchElement: true
+    @Search.fuzzinessThreshold: 0.8
+   name as Name,
+   @UI.lineItem: [{ position: 30 }]
+     @EndUserText.label: 'Designation'
+     @UI.selectionField: [{ position: 20 }]
+    @UI.dataPoint:{title: 'Designation'}
+     @UI.fieldGroup: [{ position: 30, qualifier: 'FGBasicInfo' }]
+     @Search.defaultSearchElement: true 
+     @Search.fuzzinessThreshold: 0.8
+   desig as Desig,
+      @UI.lineItem: [{ position: 40 }]
+      @EndUserText.label: 'Skill'
+      @UI.selectionField: [{ position: 30 }]
+      @UI.dataPoint:{title: 'Skill'}
+       @UI.fieldGroup: [{ position: 40, qualifier: 'FGBasicInfo' }]
+         @Search.defaultSearchElement: true 
+     @Search.fuzzinessThreshold: 0.8
+   skill as Skill,
+   @UI.dataPoint:{title: 'Email'}
+    @UI.fieldGroup: [{ position: 10, qualifier: 'FGContactInfo' }]
+    @EndUserText.label: 'Email'
+   email as Email,
+       @UI.fieldGroup: [{ position: 20, qualifier: 'FGContactInfo' }]
+       @EndUserText.label: 'Phone No'
+   phone as Phone,
+   @UI.dataPoint:{title: 'Salary'}
+   @Semantics.amount.currencyCode: 'Currencycode'
+       @UI.fieldGroup: [{ position: 30, qualifier: 'FGContactInfo' }]
+       @EndUserText.label: 'Salary'
+   salary as Salary,
+   @Semantics.currencyCode: true
+   currencycode as Currencycode,
+   @EndUserText.label: 'Status'
+      @UI.lineItem: [{ position: 60 ,importance: #HIGH,criticality: 'Statuscriticality'}]
+      @UI.selectionField: [{ position: 40 }]
+      @UI.dataPoint:{title: 'Status'}
+          @UI.fieldGroup: [{ position: 10, qualifier: 'FGStatusInfo' }]
+   status as Status,
+   statuscriticality as Statuscriticality,
+   @EndUserText.label: 'Rating'
+      @UI.lineItem: [{ position: 50 ,type: #AS_DATAPOINT, importance: #HIGH}]
+      @UI.dataPoint:[{ visualization: #RATING}]
+       @UI.fieldGroup: [{ position: 20, qualifier: 'FGStatusInfo' }]
+   rating as Rating,
+    @UI.fieldGroup: [{ position: 30, qualifier: 'FGStatusInfo' }]
+    @EndUserText.label: 'Doj'
+   doj as Doj,
+   imageurl as Imageurl ,
+   _prj
+}
