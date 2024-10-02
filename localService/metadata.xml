@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:Reference Uri=".34/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMON',Version='0001',SAP__Origin='LOCAL')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
+    </edmx:Reference>
+    <edmx:Reference Uri=".34/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_CAPABILITIES',Version='0001',SAP__Origin='LOCAL')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="Org.OData.Capabilities.V1" Alias="Capabilities"/>
+    </edmx:Reference>
+    <edmx:Reference Uri=".34/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_COMMUNICATION',Version='0001',SAP__Origin='LOCAL')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
+    </edmx:Reference>
+    <edmx:Reference Uri=".34/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_AGGREGATION',Version='0001',SAP__Origin='LOCAL')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="Org.OData.Aggregation.V1" Alias="Aggregation"/>
+    </edmx:Reference>
+    <edmx:Reference Uri=".34/sap/opu/odata/IWFND/CATALOGSERVICE;v=2/Vocabularies(TechnicalName='%2FIWBEP%2FVOC_PERSONALDATA',Version='0001',SAP__Origin='LOCAL')/$value" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+        <edmx:Include Namespace="com.sap.vocabularies.PersonalData.v1" Alias="PersonalData"/>
+    </edmx:Reference>
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZEMP_APP1_CDS" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="zemp_app1Type" sap:label="emp cds" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Empid"/>
+                </Key>
+                <Property Name="Empid" Type="Edm.String" Nullable="false" MaxLength="6" sap:label="Employee ID"/>
+                <Property Name="Name" Type="Edm.String" MaxLength="50" sap:label="Name"/>
+                <Property Name="Desig" Type="Edm.String" MaxLength="50" sap:label="Designation"/>
+                <Property Name="Skill" Type="Edm.String" MaxLength="50" sap:label="Skill"/>
+                <Property Name="Email" Type="Edm.String" MaxLength="50"/>
+                <Property Name="Phone" Type="Edm.String" MaxLength="10"/>
+                <Property Name="Salary" Type="Edm.Decimal" Precision="13" Scale="2" sap:unit="Currencycode" sap:label="Emp Salary" sap:quickinfo="data element for employee salary"/>
+                <Property Name="Currencycode" Type="Edm.String" MaxLength="5" sap:semantics="currency-code"/>
+                <Property Name="Status" Type="Edm.String" MaxLength="50" sap:label="Status"/>
+                <Property Name="Statuscriticality" Type="Edm.Byte"/>
+                <Property Name="Rating" Type="Edm.Byte" sap:label="Ratin"/>
+                <Property Name="Doj" Type="Edm.DateTime" Precision="0" sap:display-format="Date"/>
+                <Property Name="Imageurl" Type="Edm.String" MaxLength="100"/>
+                <NavigationProperty Name="to_prj" Relationship="ZEMP_APP1_CDS.assoc_6CF38F17C8FC6D3466C1040AC304729C" FromRole="FromRole_assoc_6CF38F17C8FC6D3466C1040AC304729C" ToRole="ToRole_assoc_6CF38F17C8FC6D3466C1040AC304729C"/>
+            </EntityType>
+            <EntityType Name="zprj_emp_App1Type" sap:label="project deatils" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Empid"/>
+                    <PropertyRef Name="Prjcode"/>
+                </Key>
+                <Property Name="Empid" Type="Edm.String" Nullable="false" MaxLength="6"/>
+                <Property Name="Prjcode" Type="Edm.String" Nullable="false" MaxLength="6"/>
+                <Property Name="Clientname" Type="Edm.String" MaxLength="50"/>
+                <Property Name="Prjname" Type="Edm.String" MaxLength="50"/>
+                <Property Name="Prjdesc" Type="Edm.String" MaxLength="100"/>
+                <Property Name="Teamsize" Type="Edm.Byte"/>
+            </EntityType>
+            <Association Name="assoc_6CF38F17C8FC6D3466C1040AC304729C" sap:content-version="1">
+                <End Type="ZEMP_APP1_CDS.zemp_app1Type" Multiplicity="1" Role="FromRole_assoc_6CF38F17C8FC6D3466C1040AC304729C"/>
+                <End Type="ZEMP_APP1_CDS.zprj_emp_App1Type" Multiplicity="*" Role="ToRole_assoc_6CF38F17C8FC6D3466C1040AC304729C"/>
+            </Association>
+            <EntityContainer Name="ZEMP_APP1_CDS_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="zemp_app1" EntityType="ZEMP_APP1_CDS.zemp_app1Type" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="zprj_emp_App1" EntityType="ZEMP_APP1_CDS.zprj_emp_App1Type" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <AssociationSet Name="assoc_6CF38F17C8FC6D3466C1040AC304729C" Association="ZEMP_APP1_CDS.assoc_6CF38F17C8FC6D3466C1040AC304729C" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="zemp_app1" Role="FromRole_assoc_6CF38F17C8FC6D3466C1040AC304729C"/>
+                    <End EntitySet="zprj_emp_App1" Role="ToRole_assoc_6CF38F17C8FC6D3466C1040AC304729C"/>
+                </AssociationSet>
+            </EntityContainer>
+            <Annotations Target="ZEMP_APP1_CDS.ZEMP_APP1_CDS_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Aggregation.ApplySupported">
+                    <Record>
+                        <PropertyValue Property="Transformations">
+                            <Collection>
+                                <String>aggregate</String>
+                                <String>groupby</String>
+                                <String>filter</String>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Rollup" EnumMember="None"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <atom:link rel="self" href="http://49.206.196.37:8034/sap/opu/odata/sap/ZEMP_APP1_CDS/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://49.206.196.37:8034/sap/opu/odata/sap/ZEMP_APP1_CDS/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
